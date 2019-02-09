@@ -534,6 +534,16 @@ namespace Au3Like
             File . Move ( sFile , dFile );
             }
 
+
+        // 특정 파일의 특정 라인을 읽어 반환
+        public static string FileReadLine ( string sFile , int line )
+            {
+            string gline;
+            string[] lines = System . IO . File . ReadAllLines ( @sFile );
+            gline = lines[line - 1];
+            return gline;
+            }
+
         // 특정 파일에 한줄씩 Append + 줄바꿈
         public static void FileWriteLine ( string sFile , string text )
             {
