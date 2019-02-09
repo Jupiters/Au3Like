@@ -59,6 +59,8 @@ ProgramDir       = Environment.GetEnvironmentVariable("ProgramFiles");
 // 폴더 이동    DirMove ( string spath , string dpath )
 
 // 폴더 삭제    public static bool     DirRemove(string path) 
+
 ...........
 ............
+
 // 프로세스 종료 ProcessClose ( string pName )            
