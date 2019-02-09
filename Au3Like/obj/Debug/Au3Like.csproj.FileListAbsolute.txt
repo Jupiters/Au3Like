@@ -4,3 +4,9 @@ E:\c#스터디\Au3Like\Au3Like\obj\Debug\Au3Like.dll
 E:\c#스터디\Au3Like\Au3Like\obj\Debug\Au3Like.pdb
 E:\c#스터디\Au3Like\Au3Like\obj\Debug\Interop.IWshRuntimeLibrary.dll
 E:\c#스터디\Au3Like\Au3Like\obj\Debug\Au3Like.csproj.ResolveComReference.cache
+E:\c#스터디\GitHub\Au3Like\bin\Debug\Au3Like.dll
+E:\c#스터디\GitHub\Au3Like\bin\Debug\Au3Like.pdb
+E:\c#스터디\GitHub\Au3Like\obj\Debug\Interop.IWshRuntimeLibrary.dll
+E:\c#스터디\GitHub\Au3Like\obj\Debug\Au3Like.csproj.ResolveComReference.cache
+E:\c#스터디\GitHub\Au3Like\obj\Debug\Au3Like.dll
+E:\c#스터디\GitHub\Au3Like\obj\Debug\Au3Like.pdb

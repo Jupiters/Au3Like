@@ -123,13 +123,12 @@ namespace Au3Like
             }
 
         // 숫자에 3자리마다 , 추가해서 반환하기 
-        public static string Comma ( int comma )
+        public static string   Comma ( int comma )
             {
             string str = string . Format ( "{0:#,###}" , comma ) . PadLeft ( 7 );
             return str;
             }
-
-
+        
         //폴더복사       
         public static bool     DirCopy ( string spath , string dpath )
             {
@@ -238,15 +237,11 @@ namespace Au3Like
             }
 
         //파일 바로가기 생성
-        public static void    FileCreateShortcut(string sFile)
+        public static void     FileCreateShortcut(string sFile)
         {
            
         }
-
-         
-
-
-
+        
         // 파일삭제
         public static void     FileDelete ( string fName )
             {
@@ -293,8 +288,7 @@ namespace Au3Like
 
             }
         }
-
-
+        
         // 파일의 존재 여부 반환
         public static bool     FileExists ( string fName )
             {
@@ -512,6 +506,7 @@ namespace Au3Like
         {
             return Convert . ToString ( num );
         }
+        
         // 문자를 숫자로 변환
         public static int       Number (string Munja )
         {
@@ -668,7 +663,7 @@ namespace Au3Like
             return Munja . TrimEnd ( );
         }
 
-        public static void ProcessClose ( string pName )
+        public static void     ProcessClose ( string pName )
             {
             Process[] processList = Process . GetProcessesByName ( pName );
             if ( processList . Length > 0 )
