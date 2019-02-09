@@ -1,6 +1,19 @@
 # Au3Like
 C# Library
 
+
+
+because C# is not often used,  
+
+I lost essential grammers or methods I need. 
+
+so I create a function  in c # with a 
+
+one-line function like AutoItScript.
+
+
+
+
 C# 작업을 자주하지는 않습니다.
 가끔 하지만 필요한 메서드나 클래스를 찾아
 문법도 잊어버릴때가 많고 해서 
