@@ -14,14 +14,25 @@ AutoItScript 와 같이 한줄로 된 함수로 c#의 기능 메서드를 생성
 프로젝트 추가는 https://cafe.naver.com/autoitscript/12699  페이지를 참고 하시기 바랍니다.
 
 현재 추가된 매크로 와 메서드의 목록입니다.
+
 // 프로그램의 시작 폴더경로 반환
 public static string   ScriptDir           = Application . StartupPath;
+
+
 // 윈도우 System32 폴더경로 반환
 public static string   SystemDir         = Environment . SystemDirectory;
+
+
 // 윈도우 사용자 바탕화면 폴더경로 반환
 public static string   DesktopDir        = Environment . GetFolderPath ( Environment . SpecialFolder . DesktopDirectory );
+
+
 // 윈도우 사용자 내문서 폴더경로 반환
 public static string   MyDocumentsDir = Environment . GetFolderPath ( Environment . SpecialFolder . MyDocuments );
+
+
+
+
 // 윈도우 폴더경로 반환
 public static string   WindowsDir       = Environment . GetFolderPath ( Environment . SpecialFolder . Windows );
 // 임시 폴더 반환
