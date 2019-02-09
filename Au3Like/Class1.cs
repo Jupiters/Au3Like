@@ -11,6 +11,10 @@ using Microsoft . CSharp;
 using System . Reflection;
 using System . Diagnostics;
 using System . Net;                       // 레지스트리 작업 때문엥... webclient
+
+using System . Runtime . InteropServices;  //DllImport
+
+
 namespace Au3Like
     {
     public class AutoClosingMessageBox
@@ -45,12 +49,112 @@ namespace Au3Like
 
 
 
+    public class Win32API
+        {
+        //https://xarfox.tistory.com/45
+        public const Int32 WM_COPYDATA = 0x004A;
 
+        public struct COPYDATASTRUCT
+            {
+            public IntPtr dwData;
+            public UInt32 cbData;
+            [MarshalAs ( UnmanagedType . LPStr )]
+            public string lpData;
+            }
+        [DllImport ( "user32.dll" , CharSet = CharSet . Auto )]
+        public static extern IntPtr SendMessage ( IntPtr hWnd , UInt32 Msg , IntPtr wParam , ref Win32API . COPYDATASTRUCT lParam );
 
+        [DllImport ( "user32.dll" , CharSet = CharSet . Auto )]
+        public static extern IntPtr SendMessage ( IntPtr hWnd , UInt32 Msg , IntPtr wParam , StringBuilder lParam );
+
+        [DllImport ( "user32.dll" )]
+        public static extern IntPtr SendMessage ( IntPtr hWnd , UInt32 Msg , IntPtr wParam , [MarshalAs ( UnmanagedType . LPStr )] string lParam );
+
+        [DllImport ( "user32.dll" , EntryPoint = "SendMessageW" )]
+        public static extern IntPtr SendMessageW ( IntPtr hWnd , UInt32 Msg , IntPtr wParam , [MarshalAs ( UnmanagedType . LPWStr )] string lParam );
+
+        [DllImport ( "user32.dll" )]
+        public static extern IntPtr SendMessage ( IntPtr hWnd , UInt32 Msg , Int32 wParam , Int32 lParam );
+
+        [DllImport ( "user32.dll" , CharSet = CharSet . Auto , SetLastError = false )]
+        public static extern IntPtr SendMessage ( HandleRef hWnd , UInt32 Msg , IntPtr wParam , IntPtr lParam );
+
+        [DllImport ( "user32.dll" , CharSet = CharSet . Auto )]
+        public static extern IntPtr FindWindow ( string strClassName , string strWindowName );
+        }
 
 
     public static class au3
         {
+
+        /*
+                [DllImport ( "user32.dll" , SetLastError = true )]
+                static extern IntPtr FindWindowEx ( IntPtr hwndParent , IntPtr hwndChildAfter , string lpszClass , string lpszWindow );
+                [DllImport ( "user32.dll" , SetLastError = true )]
+                public static extern IntPtr FindWindowEx ( IntPtr parentHandle , IntPtr childAfter , string className , string windowTitle );
+                [DllImport("user32.dll", CharSet = CharSet.Auto)]
+                public static extern IntPtr FindWindow(string strClassName, string strWindowName);
+                [DllImport("user32.dll")]
+                public static extern int SendMessage(int hWnd, uint Msg, int wParam, int lParam);
+               
+                public const int WM_SYSCOMMAND = 0x0112;
+                public const int SC_CLOSE = 0xF060;
+        */
+
+
+
+
+        public static Win32API . COPYDATASTRUCT data;
+
+
+        // 폼에 sendmessage
+        public static void SendMessage ( string FormText , string sMSG )
+            {
+            /*
+             int hWnd = (int)FindWindow(FormText, sMSG);
+             if( hWnd > 0 )
+             {
+               SendMessage(hWnd, WM_SYSCOMMAND, SC_CLOSE, 0);
+             }
+             */
+            //https://xarfox.tistory.com/45
+            String message = sMSG;// this . txtMessage . Text;
+            String processName = FormText;// this . txtProcessName . Text;
+            data = new Win32API . COPYDATASTRUCT ( );
+            data . dwData = ( IntPtr )( 1024 + 604 );
+            data . cbData = ( uint )message . Length * sizeof ( char );
+            data . lpData = message;
+            IntPtr handle = Win32API . FindWindow ( null , processName );
+            if ( handle . ToInt32 ( ) > 0 )
+                Win32API . SendMessage ( handle , Win32API . WM_COPYDATA , IntPtr . Zero , ref data );
+
+            }
+
+        public static string GetMyIP ( )
+            {
+            // 호스트 이름으로 IP를 구한다 
+            IPHostEntry ipEntry = Dns . GetHostEntry ( Dns . GetHostName ( ) );
+            IPAddress[] addr = ipEntry . AddressList;
+            string ip = string . Empty;
+            for ( int i = 0 ; i < addr . Length ; i++ )
+                {
+                //Console.WriteLine("IP Address {0}: {1} ", i, addr[i].ToString());
+                ip += addr[i] . ToString ( ) + " ";
+
+                }
+            return ip;
+
+            }
+
+        public static string GlobalIP ( )
+            {
+            // 외부아이피 알려주는 사이트에서 문자열 가져오기 
+            String WanIP = new WebClient ( ) . DownloadString ( "https://livow.familyds.com/ip.php" );
+            //Console.WriteLine("IP Address : {0} ", WanIP);
+            return WanIP;
+
+            }
+
 
 
         // 프로그램의 시작 폴더경로 반환
@@ -256,8 +360,6 @@ namespace Au3Like
             {
             WebClient webClient = new WebClient ( );
             webClient . DownloadFile ( url , @local );
-
-
             }
 
 
@@ -432,6 +534,33 @@ namespace Au3Like
             File . Move ( sFile , dFile );
             }
 
+        // 특정 파일에 한줄씩 Append + 줄바꿈
+        public static void FileWriteLine ( string sFile , string text )
+            {
+            using ( StreamWriter w = File . AppendText ( @sFile ) )
+                {
+                w . Write ( text + "\r\n" );
+                }
+            }
+
+        // 특정 파일에 날짜+시간 기록후 텍스트 Append + 줄바꿈
+        public static void FileWriteLine ( string sFile , string text , bool log )
+            {
+            using ( StreamWriter w = File . AppendText ( @sFile ) )
+                {
+                string nlog = Now ( );
+                w . Write ( "[" + nlog + "] " + text + "\r\n" );
+                }
+            }
+
+        // 특정파일의 특정 Line을 수정 저장
+        public static void FileWriteLine ( string sFile , string text , int line )
+            {
+            string[] lines = System . IO . File . ReadAllLines ( @sFile );
+            lines[line - 1] = text;
+            System . IO . File . WriteAllLines ( @sFile , lines );
+            }
+
         public static string ReadResourceFile ( string filename )
             {
             var thisAssembly = Assembly . GetExecutingAssembly ( );
@@ -549,6 +678,7 @@ namespace Au3Like
             {
             SendKeys . Send ( "{key}" );
             }
+
 
         // 숫자를 문자열로 변환
         public static string String ( int num )
